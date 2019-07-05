@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import './static/css/public.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
+import routers from './routers';
+
+function App() {
+  return <Fragment>{routers}</Fragment>;
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
