@@ -3,9 +3,15 @@ import ReactDOM from 'react-dom';
 import './static/css/public.css';
 import * as serviceWorker from './serviceWorker';
 import routers from './routers';
+import { Provider } from 'react-redux';
+import store from './store';
 
 function App() {
-  return <Fragment>{routers}</Fragment>;
+  return (
+    <Provider store={store}>
+      <Fragment>{routers}</Fragment>
+  </Provider>
+  );
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));

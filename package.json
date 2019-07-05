@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/core": "7.4.3",
+    "@babel/plugin-proposal-decorators": "^7.4.4",
     "@loadable/component": "^5.10.1",
     "@svgr/webpack": "4.1.0",
     "@typescript-eslint/eslint-plugin": "1.6.0",
@@ -47,7 +48,10 @@
     "react-app-polyfill": "^1.0.1",
     "react-dev-utils": "^9.0.1",
     "react-dom": "^16.8.6",
+    "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
     "resolve": "1.10.0",
     "sass-loader": "7.1.0",
     "semver": "6.0.0",
@@ -132,7 +136,13 @@
     ],
     "plugins": [
       "styled-jsx/babel",
-      "@babel/plugin-syntax-dynamic-import"
+      "@babel/plugin-syntax-dynamic-import",
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          "legacy": true
+        }
+      ]
     ]
   }
 }
