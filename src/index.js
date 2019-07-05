@@ -10,7 +10,7 @@ function App() {
   return (
     <Provider store={store}>
       <Fragment>{routers}</Fragment>
-  </Provider>
+    </Provider>
   );
 }
 
