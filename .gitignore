@@ -1,0 +1,13 @@
+# project
+node_modules/
+
+# ide
+.vscode
+.idea
+
+# mac os x
+.DS_Store
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
