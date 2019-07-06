@@ -1,4 +1,4 @@
-# react-awesome
+#t eact-awesome
 
 ### useage
 ```
@@ -11,4 +11,5 @@ npm run build
 * [react-router & @loadable/component](https://reacttraining.com/react-router/web/guides/quick-start)
 * [redux & redux-react & redux-thunk](http://cn.redux.js.org/docs/react-redux/api.html)
 * [redux-devtools-extension](https://github.com/zalmoxisus/redux-devtools-extension#usage)
+
 * [eslint](https://cn.eslint.org/)
