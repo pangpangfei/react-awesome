@@ -1,3 +1,4 @@
+/* global document */
 import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import './static/css/public.css';
