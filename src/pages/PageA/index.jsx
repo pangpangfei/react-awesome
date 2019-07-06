@@ -1,17 +1,17 @@
-import React, {PureComponent} from 'react';
-import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {updatePageAName} from './../../store/pages/pageA/action';
+import React, { PureComponent } from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { updatePageAName } from './../../store/pages/pageA/action';
 
 @connect (
   state => ({
     pageA: state.pageA
   }),
-  {updatePageAName}
+  { updatePageAName }
 )
 class PageA extends PureComponent {
   render () {
-    const {pageA: {name}, updatePageAName} = this.props;
+    const { pageA: { name }, updatePageAName } = this.props;
 
     return (
       <div className="page-a">
