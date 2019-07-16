@@ -30,6 +30,7 @@ class RubiksCube extends PureComponent {
       'bo-2-4', 'bo-3-5', 'bo-2-6',
       'bo-1-7', 'bo-2-8', 'bo-1-9'
     ]],
+    timer: 1
   }
 
   taskQueue = (() => {
@@ -47,7 +48,7 @@ class RubiksCube extends PureComponent {
         queue[index]();
         index++;
         execution();
-      }, 300);
+      }, this.state.timer);
     };
   
     const emit = func => {
@@ -69,8 +70,12 @@ class RubiksCube extends PureComponent {
     copyCurrent[2] = [...current[3].slice(0, 3), ...copyCurrent[2].slice(3)];
     copyCurrent[3] = [...current[0].slice(0, 3), ...copyCurrent[3].slice(3)];
     this.rotate(copyCurrent, current, 4);
-    this.setState({
-      current: copyCurrent
+    return new Promise(resolve => {
+      this.setState({
+        current: copyCurrent
+      }, () => {
+        resolve();
+      });
     });
   }
 
@@ -84,8 +89,12 @@ class RubiksCube extends PureComponent {
     this.rotate(copyCurrent, current, 5);
     this.rotate(copyCurrent, deepClone(copyCurrent), 5);
     this.rotate(copyCurrent, deepClone(copyCurrent), 5);
-    this.setState({
-      current: copyCurrent
+    return new Promise(resolve => {
+      this.setState({
+        current: copyCurrent
+      }, () => {
+        resolve();
+      });
     });
   }
 
@@ -129,8 +138,12 @@ class RubiksCube extends PureComponent {
     this.rotate(copyCurrent, current, 3);
     this.rotate(copyCurrent, deepClone(copyCurrent), 3);
     this.rotate(copyCurrent, deepClone(copyCurrent), 3);
-    this.setState({
-      current: copyCurrent
+    return new Promise(resolve => {
+      this.setState({
+        current: copyCurrent
+      }, () => {
+        resolve();
+      });
     });
   }
 
@@ -180,8 +193,12 @@ class RubiksCube extends PureComponent {
     ];
     
     this.rotate(copyCurrent, current, 1);
-    this.setState({
-      current: copyCurrent
+    return new Promise(resolve => {
+      this.setState({
+        current: copyCurrent
+      }, () => {
+        resolve();
+      });
     });
   }
 
@@ -225,8 +242,12 @@ class RubiksCube extends PureComponent {
     this.rotate(copyCurrent, deepClone(copyCurrent), 0);
     this.rotate(copyCurrent, deepClone(copyCurrent), 0);
 
-    this.setState({
-      current: copyCurrent
+    return new Promise(resolve => {
+      this.setState({
+        current: copyCurrent
+      }, () => {
+        resolve();
+      });
     });
   }
 
@@ -268,8 +289,12 @@ class RubiksCube extends PureComponent {
 
     this.rotate(copyCurrent, current, 2);
 
-    this.setState({
-      current: copyCurrent
+    return new Promise(resolve => {
+      this.setState({
+        current: copyCurrent
+      }, () => {
+        resolve();
+      });
     });
   }
 
@@ -307,12 +332,15 @@ class RubiksCube extends PureComponent {
   }
 
   rocovery = () => {
+    this.firstStep();
+  }
+
+  firstStep = () => {
     const { current } = this.state;
     const pos = this.find('bo-2');
     for(let i = 0; i < pos.length; i++) {
       const item = pos[i];
       const [j, h] = item;
-      // console.log(c);
       if(j === 4) {
         continue;
       }
@@ -352,24 +380,24 @@ class RubiksCube extends PureComponent {
         if(verObj) {
           if(current[4][verObj.topIndex].startsWith('bo-2')) {
             this.taskQueue.emit(this.frontTopLeft);
-            this.taskQueue.emit(this.rocovery);
-            break;
+            this.taskQueue.emit(this.firstStep);
+            return;
           }
           new Array(verObj.repeat).fill('').forEach(item => {
             this.taskQueue.emit(verObj.method);
           });
-          this.taskQueue.emit(this.rocovery);
-          break;
+          this.taskQueue.emit(this.firstStep);
+          return;
         }
         if([1, 7].includes(h)) {
           if(current[4][currentObj.topIndex].startsWith('bo-2')) {
             this.taskQueue.emit(this.frontTopLeft);
-            this.taskQueue.emit(this.rocovery);
-            break;
+            this.taskQueue.emit(this.firstStep);
+            return;
           }
           this.taskQueue.emit(currentObj.roateMethod);
-          this.taskQueue.emit(this.rocovery);
-          break;
+          this.taskQueue.emit(this.firstStep);
+          return;
         }
       }
       if(j === 5) {
@@ -383,16 +411,49 @@ class RubiksCube extends PureComponent {
         if(currentObj) {
           if(current[4][currentObj.index].startsWith('bo-2')) {
             this.taskQueue.emit(this.frontTopLeft);
-            this.taskQueue.emit(this.rocovery);
-            break;
+            this.taskQueue.emit(this.firstStep);
+            return;
           }
           this.taskQueue.emit(currentObj.mtehod);
           this.taskQueue.emit(currentObj.mtehod);
-          this.taskQueue.emit(this.rocovery);
-          break;
+          this.taskQueue.emit(this.firstStep);
+          return;
         }
       }
     }
+    console.log('frist step finish');
+    this.secondStep();
+  }
+
+  secondStep = () => {
+    const { current } = this.state;
+    const obj = {
+      0: {start: 'f-', index: 7, method: this.frontRotate},
+      1: {start: 'r-', index: 5, method: this.frontRightTop},
+      2: {start: 'ba-', index: 1, method: this.backRotate},
+      3: {start: 'l-', index: 3, method: this.frontLeftTop}
+    };
+    const finished = current[5].filter(item => item.startsWith('bo-2')).length;
+    for(let i = finished; i < 4; i++) {
+      if(current[i][1].startsWith(obj[i].start)) {
+        this.taskQueue.emit(obj[i].method);
+        this.taskQueue.emit(obj[i].method);
+        this.taskQueue.emit(this.secondStep);
+        return;
+      } else {
+        this.taskQueue.emit(this.frontTopLeft);
+        this.taskQueue.emit(this.secondStep);
+        return;
+      }
+    }
+
+    console.log('second step finish');
+    this.thirdStep();
+  }
+
+  thirdStep = () => {
+    const target = this.find('bo-1');
+    console.log(target);
   }
 
   render () {
