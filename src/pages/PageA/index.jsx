@@ -36,6 +36,7 @@ class PageA extends PureComponent {
           change name
         </button>
         <Link to="/page_b">link to page b</Link>
+        <Link to="/rubiks_cube">Rubik's Cube</Link>
         <style jsx>{`
             .page-a {
                 display: flex;
