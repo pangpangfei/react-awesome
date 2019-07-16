@@ -321,29 +321,29 @@ class RubiksCube extends PureComponent {
           topIndex: 7, 
           bottomIndex: 1, 
           roateMethod: this.frontRotate,
-          3: { topIndex: 3, bottomIndex: 3, method: this.frontLeftTop, repeat: 1},
-          5: { topIndex: 5, bottomIndex: 5, method: this.frontRightTop, repeat: 1}
+          3: { topIndex: 3, method: this.frontLeftTop, repeat: 1},
+          5: { topIndex: 5, method: this.frontRightTop, repeat: 1}
         },
         1: {
           topIndex: 5, 
           bottomIndex: 5, 
           roateMethod: this.frontRightTop,
-          3: { topIndex: 7, bottomIndex: 1, method: this.frontRotate, repeat: 1},
-          5: { topIndex: 1, bottomIndex: 7, method: this.backRotate, repeat: 1}
+          3: { topIndex: 7, method: this.frontRotate, repeat: 1},
+          5: { topIndex: 1, method: this.backRotate, repeat: 1}
         },
         2: {
           topIndex: 1, 
           bottomIndex: 7, 
           roateMethod: this.backRotate,
-          3: { topIndex: 5, bottomIndex: 5, method: this.frontRightTop, repeat: 3},
-          5: { topIndex: 3, bottomIndex: 3, method: this.frontLeftTop, repeat: 3}
+          3: { topIndex: 5, method: this.frontRightTop, repeat: 3},
+          5: { topIndex: 3, method: this.frontLeftTop, repeat: 3}
         },
         3: {
           topIndex: 3, 
           bottomIndex: 3, 
           roateMethod: this.frontLeftTop,
-          3: { topIndex: 1, bottomIndex: 7, method: this.backRotate, repeat: 3},
-          5: { topIndex: 7, bottomIndex: 1, method: this.frontRotate, repeat: 3}
+          3: { topIndex: 1, method: this.backRotate, repeat: 3},
+          5: { topIndex: 7, method: this.frontRotate, repeat: 3}
         }
       };
       const currentObj = obj[j];
@@ -352,11 +352,6 @@ class RubiksCube extends PureComponent {
         if(verObj) {
           if(current[4][verObj.topIndex].startsWith('bo-2')) {
             this.taskQueue.emit(this.frontTopLeft);
-            this.taskQueue.emit(this.rocovery);
-            break;
-          }
-          if(current[5][verObj.bottomIndex].startsWith('bo-2')) {
-            this.taskQueue.emit(this.frontBottomLeft);
             this.taskQueue.emit(this.rocovery);
             break;
           }
@@ -372,11 +367,6 @@ class RubiksCube extends PureComponent {
             this.taskQueue.emit(this.rocovery);
             break;
           }
-          // if(current[5][currentObj.bottomIndex].startsWith('bo-2')) {
-          //   this.taskQueue.emit(this.frontBottomLeft);
-          //   this.taskQueue.emit(this.rocovery);
-          //   break;
-          // }
           this.taskQueue.emit(currentObj.roateMethod);
           this.taskQueue.emit(this.rocovery);
           break;
