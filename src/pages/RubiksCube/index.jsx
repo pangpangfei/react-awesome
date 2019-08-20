@@ -63,6 +63,7 @@ class RubiksCube extends PureComponent {
   })();
 
   frontTopLeft = () => {
+    console.log('frontTopLeft');
     const { current } = this.state;
     const copyCurrent = JSON.parse(JSON.stringify(current));
     copyCurrent[0] = [...current[1].slice(0, 3), ...copyCurrent[0].slice(3)];
@@ -80,6 +81,7 @@ class RubiksCube extends PureComponent {
   }
 
   frontBottomLeft = () => {
+    console.log('frontBottomLeft');
     const { current } = this.state;
     const copyCurrent = deepClone(current);
     copyCurrent[0] = [...copyCurrent[0].slice(0, 6), ...current[1].slice(6)];
@@ -99,6 +101,7 @@ class RubiksCube extends PureComponent {
   }
 
   frontLeftTop = () =>  {
+    console.log('frontLeftTop');
     const { current } = this.state;
     const copyCurrent = deepClone(current);
 
@@ -148,6 +151,7 @@ class RubiksCube extends PureComponent {
   }
 
   frontRightTop = () =>  {
+    console.log('frontRightTop');
     const { current } = this.state;
     const copyCurrent = deepClone(current);
 
@@ -203,6 +207,7 @@ class RubiksCube extends PureComponent {
   }
 
   frontRotate = () =>  {
+    console.log('frontRotate');
     const { current } = this.state;
     const copyCurrent = deepClone(current);
 
@@ -252,6 +257,7 @@ class RubiksCube extends PureComponent {
   }
 
   backRotate = () => {
+    console.log('backRotate');
     const { current } = this.state;
     const copyCurrent = deepClone(current);
 
@@ -448,12 +454,116 @@ class RubiksCube extends PureComponent {
     }
 
     console.log('second step finish');
-    this.thirdStep();
+    // this.thirdStep();
   }
 
   thirdStep = () => {
+    const { current } = this.state;
     const target = this.find('bo-1');
-    console.log(target);
+    console.log(JSON.stringify(target));
+    for(let i = 0; i < target.length; i++) {
+      const [j, h] = target[i];
+      if([0, 1, 2, 3].includes(j) && [0, 2].includes(h)) {
+        if(j === 0) {
+          if(h === 0) {
+            if(current[3][2].startsWith('l-')) {
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontLeftTop);
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontLeftTop);
+              this.taskQueue.emit(this.frontLeftTop);
+              this.taskQueue.emit(this.frontLeftTop);
+              this.taskQueue.emit(this.thirdStep);
+              return;
+            }
+            if(current[3][2].startsWith('f-')) {
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontRightTop);
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontRightTop);
+              this.taskQueue.emit(this.frontRightTop);
+              this.taskQueue.emit(this.frontRightTop);
+              this.taskQueue.emit(this.thirdStep);
+              return;
+            }
+            if(current[3][2].startsWith('ba-')) {
+              this.taskQueue.emit(this.backRotate);
+              this.taskQueue.emit(this.backRotate);
+              this.taskQueue.emit(this.backRotate);
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.backRotate);
+              this.taskQueue.emit(this.thirdStep);
+              return;
+            }
+            if(current[3][2].startsWith('r-')) {
+              this.taskQueue.emit(this.frontRightTop);
+              this.taskQueue.emit(this.frontRightTop);
+              this.taskQueue.emit(this.frontRightTop);
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontRightTop);
+              this.taskQueue.emit(this.thirdStep);
+              return;
+            }
+          }
+          if(h === 2) {
+            if(current[1][0].startsWith('f-')) {
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontRotate);
+              this.taskQueue.emit(this.frontRotate);
+              this.taskQueue.emit(this.frontRotate);
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontRotate);
+              this.taskQueue.emit(this.thirdStep);
+              return;
+            }
+            if(current[1][0].startsWith('r-')) {
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontRightTop);
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontRightTop);
+              this.taskQueue.emit(this.frontRightTop);
+              this.taskQueue.emit(this.frontRightTop);
+              this.taskQueue.emit(this.thirdStep);
+              return;
+            }
+            if(current[1][0].startsWith('l-')) {
+              this.taskQueue.emit(this.frontLeftTop);
+              this.taskQueue.emit(this.frontLeftTop);
+              this.taskQueue.emit(this.frontLeftTop);
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontLeftTop);
+              this.taskQueue.emit(this.thirdStep);
+              return;
+            }
+            if(current[1][0].startsWith('ba-')) {
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.backRotate);
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.frontTopLeft);
+              this.taskQueue.emit(this.backRotate);
+              this.taskQueue.emit(this.backRotate);
+              this.taskQueue.emit(this.backRotate);
+              this.taskQueue.emit(this.thirdStep);
+              return;
+            }
+          }
+        } else {
+          this.taskQueue.emit(this.frontTopLeft);
+          this.taskQueue.emit(this.thirdStep);
+        }
+        return;
+      }
+    }
   }
 
   render () {
@@ -470,8 +580,10 @@ class RubiksCube extends PureComponent {
           <button onClick={this.frontRotate}>front_rotate</button>
           <button onClick={this.backRotate}>back_rotate</button>
           <button onClick={this.radom}>radom</button>
+          <button onClick={this.thirdStep}>test</button>
           <button onClick={this.rocovery}>rocovery</button>
           <button onClick={() => { clearTimeout(this.queueTimer); }}>pause</button>
+          <button onClick={() => { this.taskQueue.execution(); }}>start</button>
           <button onClick={() => { this.taskQueue.execution(); }}>start</button>
         </div>
         <div className="main">

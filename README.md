@@ -1,6 +1,6 @@
 # react-awesome
 
-### useage
+### usage
 ```
 npm start
 npm run build
